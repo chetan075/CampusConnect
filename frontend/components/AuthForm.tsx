@@ -2,6 +2,15 @@
 
 import { useState } from "react";
 import api from "@/lib/axios";
+import {
+  Field,
+  FieldDescription,
+  FieldGroup,
+  FieldLabel,
+  FieldSet,
+} from "@/components/ui/field"
+import { Input } from "@/components/ui/input"
+import { Button } from "@/components/ui/button"
 
 export default function AuthForm({ mode }: { mode: "login" | "register" }) {
   const [form, setForm] = useState({ name: "", email: "", password: "" });
@@ -29,36 +38,52 @@ export default function AuthForm({ mode }: { mode: "login" | "register" }) {
   };
 
   return (
-    <div className="max-w-[420px] mx-auto mt-10 p-5 border border-gray-200 bg-white">
-      <h2 className="text-center mb-3 font-medium">{mode === "login" ? "Login" : "Register"}</h2>
+    <div className="max-w-[420px] w-full p-5 border border-border bg-card rounded-lg shadow-sm">
+      <h2 className="text-center mb-3 font-medium text-foreground">{mode === "login" ? "Login" : "Register"}</h2>
 
       <form onSubmit={onSubmit}>
-        {mode === "register" && (
-          <div className="mb-2">
-            <input name="name" placeholder="Name" value={form.name} onChange={onChange} className="w-full p-2 border" />
-          </div>
-        )}
+        <FieldSet className="w-full">
+          <FieldGroup>
+            {mode === "register" && (
+              <Field>
+                <FieldLabel htmlFor="name">Name</FieldLabel>
+                <Input id="name" name="name" type="text" placeholder="Your Name" value={form.name} onChange={onChange} />
+                <FieldDescription>
+                  Enter your full name.
+                </FieldDescription>
+              </Field>
+            )}
 
-        <div className="mb-2">
-          <input name="email" type="email" placeholder="Email" value={form.email} onChange={onChange} className="w-full p-2 border" />
-        </div>
+            <Field>
+              <FieldLabel htmlFor="email">Email</FieldLabel>
+              <Input id="email" name="email" type="email" placeholder="your@email.com" value={form.email} onChange={onChange} />
+              <FieldDescription>
+                We'll use this to create your account.
+              </FieldDescription>
+            </Field>
 
-        <div className="mb-2">
-          <input name="password" type="password" placeholder="Password" value={form.password} onChange={onChange} className="w-full p-2 border" />
-        </div>
+            <Field>
+              <FieldLabel htmlFor="password">Password</FieldLabel>
+              <Input id="password" name="password" type="password" placeholder="••••••••" value={form.password} onChange={onChange} />
+              <FieldDescription>
+                Must be at least 8 characters long.
+              </FieldDescription>
+            </Field>
+          </FieldGroup>
+        </FieldSet>
 
-        <div className="text-center">
-          <button type="submit" className="px-4 py-2 bg-blue-600 text-white rounded">{mode === "login" ? "Login" : "Register"}</button>
+        <div className="text-center mt-4">
+          <Button type="submit" className="w-full">{mode === "login" ? "Login" : "Register"}</Button>
         </div>
       </form>
 
-      {message && <p className="text-red-500 mt-3 text-center">{message}</p>}
+      {message && <p className="text-red-500 mt-3 text-center text-destructive">{message}</p>}
 
-      <p className="text-center mt-3">
+      <p className="text-center mt-3 text-muted-foreground">
         {mode === "login" ? (
-          <a href="/register" className="text-blue-600">Create account</a>
+          <a href="/register" className="text-primary hover:underline">Create account</a>
         ) : (
-          <a href="/login" className="text-blue-600">Have an account? Login</a>
+          <a href="/login" className="text-primary hover:underline">Have an account? Login</a>
         )}
       </p>
     </div>

@@ -18,11 +18,11 @@ exports.getUserProfile = async (req, res) => {
 exports.getUsers = async (req, res) => {
   try {
     // basic list, exclude passwords
-    const users = await User.find().select('-password').limit(200);
+    const users = await User.find().select("-password").limit(200);
     res.status(200).json(users);
   } catch (err) {
-    console.error('Error fetching users:', err.message);
-    res.status(500).json({ error: 'Server error' });
+    console.error("Error fetching users:", err.message);
+    res.status(500).json({ error: "Server error" });
   }
 };
 
@@ -53,14 +53,16 @@ exports.getUserEvents = async (req, res) => {
 exports.updateUser = async (req, res) => {
   try {
     const user = await User.findById(req.params.id);
-    if (!user) return res.status(404).json({ message: 'User not found' });
+    if (!user) return res.status(404).json({ message: "User not found" });
 
     // Only the user themselves or an admin can update
-    if (req.user.id !== user._id.toString() && req.user.role !== 'admin') {
-      return res.status(403).json({ message: 'Not authorized to update this user' });
+    if (req.user.id !== user._id.toString() && req.user.role !== "admin") {
+      return res
+        .status(403)
+        .json({ message: "Not authorized to update this user" });
     }
 
-    const allowed = ['name', 'email'];
+    const allowed = ["name", "email"];
     allowed.forEach((k) => {
       if (req.body[k] !== undefined) user[k] = req.body[k];
     });
@@ -68,10 +70,10 @@ exports.updateUser = async (req, res) => {
     await user.save();
     const out = user.toObject();
     delete out.password;
-    res.status(200).json({ message: 'User updated', user: out });
+    res.status(200).json({ message: "User updated", user: out });
   } catch (err) {
-    console.error('Error updating user:', err.message);
-    res.status(500).json({ error: 'Server error' });
+    console.error("Error updating user:", err.message);
+    res.status(500).json({ error: "Server error" });
   }
 };
 
@@ -85,7 +87,9 @@ exports.deletePost = async (req, res) => {
 
     // Check if current user owns the post
     if (post.createdBy.toString() !== req.user.id) {
-      return res.status(403).json({ error: "Not authorized to delete this post" });
+      return res
+        .status(403)
+        .json({ error: "Not authorized to delete this post" });
     }
 
     // // 👇 If post has image, delete from Cloudinary
@@ -93,9 +97,9 @@ exports.deletePost = async (req, res) => {
     //   // Extract public_id from URL (Cloudinary URL format example)
     //   const publicId = post.image.split("/").pop().split(".")[0];
     //   await cloudinary.uploader.destroy(`campus-connect/${publicId}`);
-      // }
-      
-      await deleteFromCloudinary(post.image);
+    // }
+
+    await deleteFromCloudinary(post.image);
 
     await post.deleteOne();
 

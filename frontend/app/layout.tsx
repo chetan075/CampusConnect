@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-// Redux removed — app uses cookie-based auth and local state
 
 const geistSans = Geist({
   variable: "--font-geist-sans",

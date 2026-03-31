@@ -186,7 +186,7 @@ export default function PostsPage() {
                     <div className="mt-3">
                       {editingPostId === p._id ? (
                         <div className="mb-2">
-                          <textarea value={editingContent} onChange={(e)=>setEditingContent(e.target.value)} className="w-full border p-2 rounded" />
+                          <textarea title="Edit post content" value={editingContent} onChange={(e)=>setEditingContent(e.target.value)} className="w-full border p-2 rounded" />
                           <div className="flex gap-2 mt-2">
                             <button onClick={()=>saveEdit(p._id)} className="px-3 py-1 bg-green-600 text-white rounded">Save</button>
                             <button onClick={()=>{setEditingPostId(null); setEditingContent('')}} className="px-3 py-1 border rounded">Cancel</button>
